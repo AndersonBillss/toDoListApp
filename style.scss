@@ -1,0 +1,117 @@
+$listPadding: 15px;
+$contentLeftWidth: 250px;
+
+$mainDarkBlue: rgb(40, 42, 54);
+$navTextColor: rgb(193, 202, 208);
+$mainLightGray: rgb(241, 241, 241);
+$listBackgroundColor: rgb(117, 117, 128);
+
+
+
+input{
+    padding: 10px 0;
+    box-sizing:border-box;
+    width: $contentLeftWidth;
+}
+
+i{
+    margin: 5px;
+}
+body{
+    background-color: $mainDarkBlue;
+}
+.container{
+    max-width: 1400px;
+    justify-content: center;
+    margin: 0 auto;
+    background-color: white;
+}
+.nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 25px;
+    font-size: 24px;
+    color: $navTextColor;
+    background-color: $mainDarkBlue;
+    border: 2px $navTextColor solid;
+}
+.content{
+    display: flex;
+}
+.contentLeft{
+    background-color: $mainLightGray;
+    width: $contentLeftWidth;
+}
+.contentLeft > *{
+    margin-top: 15px;
+}
+.contentLeft > * > *{
+    padding: 10px 15px;
+}
+.contentRight{
+    flex-grow: 4;
+}
+.button:hover{
+    cursor: pointer;
+}
+.list{
+    background-color: $listBackgroundColor;
+    color: $mainLightGray
+}
+
+
+/* .content{
+    display: flex;
+}
+.contentLeft
+
+
+.nav{
+    align-items: center;
+    padding: 15px 50px;
+    background-color: cadetblue;
+    font-size: 24px;
+}
+
+#lists{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.list{
+    margin: 25px;
+    width: 250px;
+    box-shadow: gray 0px 0px 10px;
+}
+
+.title{
+    background-color:cadetblue;
+    border-bottom: 2px $borderBlue solid;
+    padding: $listPadding;
+}
+.items div{
+    padding: 5px $listPadding;
+}
+
+.items div:nth-child(odd){
+    background-color: lightgray;
+}
+
+.title img{
+    width: 10px;
+    height: 10px;
+    margin-left: 5px;
+}
+.title{
+    display: flex;
+    justify-content: space-between;
+}
+.right{
+    display: flex;
+}
+.right img{
+    width:20px;
+    height: 25px;
+    margin-right: 20px;
+} */
