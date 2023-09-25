@@ -12,6 +12,10 @@ body {
   background-color: rgb(40, 42, 54);
 }
 
+ul {
+  list-style-type: none;
+}
+
 .container {
   max-width: 1400px;
   justify-content: center;
@@ -43,10 +47,6 @@ body {
   margin-top: 15px;
 }
 
-.contentLeft > * > * {
-  padding: 10px 15px;
-}
-
 .contentRight {
   flex-grow: 4;
 }
@@ -55,62 +55,9 @@ body {
   cursor: pointer;
 }
 
-.list {
+.listGroupItem {
   background-color: rgb(117, 117, 128);
   color: rgb(241, 241, 241);
-}
-
-/* .content{
-    display: flex;
-}
-.contentLeft
-
-
-.nav{
-    align-items: center;
-    padding: 15px 50px;
-    background-color: cadetblue;
-    font-size: 24px;
-}
-
-#lists{
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.list{
-    margin: 25px;
-    width: 250px;
-    box-shadow: gray 0px 0px 10px;
-}
-
-.title{
-    background-color:cadetblue;
-    border-bottom: 2px $borderBlue solid;
-    padding: $listPadding;
-}
-.items div{
-    padding: 5px $listPadding;
-}
-
-.items div:nth-child(odd){
-    background-color: lightgray;
-}
-
-.title img{
-    width: 10px;
-    height: 10px;
-    margin-left: 5px;
-}
-.title{
-    display: flex;
-    justify-content: space-between;
-}
-.right{
-    display: flex;
-}
-.right img{
-    width:20px;
-    height: 25px;
-    margin-right: 20px;
-} *//*# sourceMappingURL=style.css.map */
+  margin: 10px 0;
+  padding: 15px 30px;
+}/*# sourceMappingURL=style.css.map */
