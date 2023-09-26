@@ -43,6 +43,11 @@ ul {
   width: 250px;
 }
 
+.warning {
+  color: red;
+  font-weight: bold;
+}
+
 .contentLeft > * {
   margin-top: 15px;
 }
@@ -55,9 +60,36 @@ ul {
   cursor: pointer;
 }
 
+.listGroup {
+  padding: 0;
+}
+
 .listGroupItem {
+  display: flex;
+  flex-grow: 1;
   background-color: rgb(117, 117, 128);
   color: rgb(241, 241, 241);
   margin: 10px 0;
   padding: 15px 30px;
+}
+
+#contentRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: start;
+  padding: 15px;
+}
+
+.input {
+  display: flex;
+}
+
+#selectedName {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.hidden {
+  display: none !important;
 }/*# sourceMappingURL=style.css.map */

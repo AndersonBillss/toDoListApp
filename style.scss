@@ -46,6 +46,10 @@ ul{
     background-color: $mainLightGray;
     width: $contentLeftWidth;
 }
+.warning{
+    color: red;
+    font-weight: bold;
+}
 .contentLeft > *{
     margin-top: 15px;
 }
@@ -55,10 +59,34 @@ ul{
 .button:hover{
     cursor: pointer;
 }
+.listGroup{
+padding: 0;
+}
 .listGroupItem{
+    display: flex;
+    flex-grow: 1;
     background-color: $listBackgroundColor;
     color: $mainLightGray;
     margin: 10px 0;
     padding: 15px 30px;
 }
 
+#contentRight{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: start;
+    padding: 15px
+}
+.input{
+    display: flex;
+}
+#selectedName{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+.hidden{
+    display: none !important;
+}
