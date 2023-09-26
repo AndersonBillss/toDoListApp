@@ -1,22 +1,27 @@
 
 const lists = {};
+//sets 
+let itemNumber = selectList.length
 
-
-/* const lists = {1: {name: 'aaaa', todos: []}, 2: {name: 'aa', todos: []}, 3: {name: 'aaa', todos: []}}; */
-
-
+//get the index of the selected list
 let selectedListIndex = 1;
+function selectList(){
+    const selectedListId = this.id
+    const selectedListIdNum = Number(selectedListId.charAt(selectedListId.length -1));
+    selectedListIndex = selectedListIdNum;
+    render()
+    itemNumber = selectList.length
+}
 
 
-
-//add list button
+//add list button and enter press
 document.getElementById('newListButton').addEventListener('click', addList)
 document.getElementById('newListTitle').addEventListener('keydown', (event) => {
     if(event.key === 'Enter'){
         addList();
     }
 })
-//add item button
+//add item button and enter press
 document.getElementById('newItemButton').addEventListener('click', addItem)
 document.getElementById('newItemName').addEventListener('keydown', (event) => {
     if(event.key === 'Enter'){
@@ -25,11 +30,12 @@ document.getElementById('newItemName').addEventListener('keydown', (event) => {
 })
 
 
-//add list
+//function to add a list to the array
 let listNumber = 1
 function addList(){
+    //stores the new list title as a variable
     let newListTitle = document.getElementById('newListTitle').value
-    //error message
+    //error message (when you make a duplicate list)
     for(i=1; i<=Object.keys(lists).length; i++){
         let listItem = lists[i];
         if(newListTitle == listItem.name){
@@ -39,7 +45,7 @@ function addList(){
     }
     document.getElementById("warningList").innerHTML = ""
 
-    //add new list
+    //adds new list to the array
     if (newListTitle != 0 && newListTitle != null && newListTitle !=undefined ){
         lists[listNumber]=({name:newListTitle, todos: []})
         listNumber++
@@ -51,14 +57,14 @@ function addList(){
 
 
 
-//add item
-let itemNumber = 0
+//function to add an item to a list
 function addItem(){
     const selectedList = lists[selectedListIndex];
-
+    
+    //stores the new item's name as a variable
     let newItemName = document.getElementById('newItemName').value
 
-    //error message
+    //error message (when you make a duplicate item)
     for(i=0; i<=Object.keys(selectedList.todos).length; i++){
         let item = selectedList.todos[i]
         if(newItemName == item){
@@ -68,7 +74,7 @@ function addItem(){
     }
     document.getElementById("warningItem").innerHTML = ""
 
-    //add new Item
+    //add new Item to list
     if (newItemName != 0 && newItemName != null && newItemName !=undefined ){
         selectedList.todos[itemNumber] = [newItemName]
         itemNumber++
@@ -81,7 +87,7 @@ function addItem(){
 
 
 function render(){
-    //list of lists
+    //render list of lists
     const selectedList = lists[selectedListIndex];
 
     let listsHtml = `<ul class="listGroup">`;
@@ -92,22 +98,26 @@ function render(){
     listsHtml += `</ul>`
     document.getElementById("lists").innerHTML = listsHtml;
 
-    //add buttons to each list
-   /*  for(i=1; i<=Object.keys(lists).length; i++) */
+    //makes each list a button that lets you switch between lists
+    const htmlListArray = document.getElementsByClassName('listGroupItem')
+    for(i=0; i<=(Object.keys(lists).length-1); i++){
+        htmlListArray[i].addEventListener('click', selectList)
+        htmlListArray[i].id = "list" + (i+1)
+    }
 
-    //display selected list title
+    //render selected list title
     if(selectedList != null && selectedList != undefined){
         document.getElementById('selectedName').innerHTML = selectedList.name
 
-        //todos
+        //render todos
         let itemsHtml = `<ul class="itemGroup">`
         for(i=0; i<Object.keys(selectedList.todos).length; i++){
             let item = selectedList.todos[i]
             itemsHtml += `<li class="itemGroupItem">` + item + `</li>`
         }
         document.getElementById('listItems').innerHTML = itemsHtml;
-        //hide contentRight html
-        document.getElementById('contentRight').className = "none"
+        //hides contentRight html when there are no lists to display 
+        document.getElementById('contentRight').className = ""
     } else
     document.getElementById('contentRight').className = "hidden"
 }
@@ -115,7 +125,7 @@ function render(){
 
 
 
-
+//test button for debugging purposes
 document.getElementById('test').addEventListener('click',function(){
 })
 
