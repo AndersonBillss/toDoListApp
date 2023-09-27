@@ -1,16 +1,32 @@
 
 const lists = {};
-//sets 
+
 let itemNumber = selectList.length
 
-//get the index of the selected list
+//get the index of the selected list and switch to it
 let selectedListIndex = 1;
 function selectList(){
+
     const selectedListId = this.id
     const selectedListIdNum = Number(selectedListId.charAt(selectedListId.length -1));
+    const htmlListArray = document.getElementsByClassName('listGroupItem')
+
     selectedListIndex = selectedListIdNum;
     render()
     itemNumber = selectList.length
+
+
+    //gives selected list a class of selected
+    for(i=0; i<Object.keys(lists).length; i++){
+        const listId = htmlListArray[i].id
+        const listIdNum = Number(listId.charAt(listId.length -1));
+
+        if (listIdNum == selectedListIdNum){
+            document.getElementById('list' + (i + 1)).className = "selected listGroupItem button"
+        } else{
+            document.getElementById('list' + (i + 1)).className = "listGroupItem button"
+        }
+    }
 }
 
 
@@ -60,7 +76,7 @@ function addList(){
 //function to add an item to a list
 function addItem(){
     const selectedList = lists[selectedListIndex];
-    
+
     //stores the new item's name as a variable
     let newItemName = document.getElementById('newItemName').value
 
@@ -103,6 +119,17 @@ function render(){
     for(i=0; i<=(Object.keys(lists).length-1); i++){
         htmlListArray[i].addEventListener('click', selectList)
         htmlListArray[i].id = "list" + (i+1)
+
+        //adds selected class to selected list
+        const selectedListId = htmlListArray[(selectedListIndex-1)].id
+        const selectedListIdNum = Number(selectedListId.charAt(selectedListId.length -1));
+        const listId = htmlListArray[i].id
+        const listIdNum = Number(listId.charAt(listId.length -1));
+        if (listIdNum == selectedListIdNum){
+            document.getElementById('list' + (i + 1)).className = "selected listGroupItem button"
+        } else{
+            document.getElementById('list' + (i + 1)).className = "listGroupItem button"
+        }
     }
 
     //render selected list title

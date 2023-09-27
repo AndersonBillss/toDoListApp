@@ -90,6 +90,11 @@ ul {
   font-weight: bold;
 }
 
+.selected {
+  box-shadow: 0 0 5px blue;
+  background-color: darkblue;
+}
+
 .hidden {
   display: none !important;
 }/*# sourceMappingURL=style.css.map */
