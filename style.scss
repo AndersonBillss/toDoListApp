@@ -5,7 +5,7 @@ $mainDarkBlue: rgb(40, 42, 54);
 $navTextColor: rgb(193, 202, 208);
 $mainLightGray: rgb(241, 241, 241);
 $listBackgroundColor: rgb(117, 117, 128);
-
+$iconHighlightColor: rgb(125, 133, 239);
 
 
 input{
@@ -50,11 +50,16 @@ ul{
     color: red;
     font-weight: bold;
 }
-.contentLeft > *{
+#contentLeft > *{
     margin-top: 15px;
 }
-.contentRight{
+#contentLeft{
+    max-width: 30%;
+    background-color: $navTextColor;
+}
+#contentRight{
     flex-grow: 4;
+    max-width: 70%;
 }
 .button:hover{
     cursor: pointer;
@@ -65,12 +70,26 @@ padding: 0;
 .listGroupItem{
     display: flex;
     flex-grow: 1;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
     background-color: $listBackgroundColor;
     color: $mainLightGray;
-    margin: 10px 0;
+}
+.listGroupItem .switchLists{
+    display: flex;
+    flex-grow: 1;
     padding: 15px 30px;
+    margin: 0px;
+} 
+.listButtons{
+    padding: 0;
+    margin-right: 25px;
 }
 
+#contentLeft{
+    padding: 15px
+}
 #contentRight{
     display: flex;
     flex-direction: column;
@@ -94,4 +113,25 @@ padding: 0;
 
 .hidden{
     display: none !important;
+}
+
+.listGroupItem i:hover{
+    color: $iconHighlightColor;
+}
+.listGroupItem:hover{
+    filter: brightness(80%);
+}
+
+li i{
+    display: none !important;
+}
+.editMode li i{
+    display: inline !important;
+}
+.listButtons{
+    text-wrap: nowrap;
+}
+.nav i{
+    padding: 10px;
+    border-radius: 50px;
 }

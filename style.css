@@ -48,12 +48,18 @@ ul {
   font-weight: bold;
 }
 
-.contentLeft > * {
+#contentLeft > * {
   margin-top: 15px;
 }
 
-.contentRight {
+#contentLeft {
+  max-width: 30%;
+  background-color: rgb(193, 202, 208);
+}
+
+#contentRight {
   flex-grow: 4;
+  max-width: 70%;
 }
 
 .button:hover {
@@ -67,10 +73,27 @@ ul {
 .listGroupItem {
   display: flex;
   flex-grow: 1;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
   background-color: rgb(117, 117, 128);
   color: rgb(241, 241, 241);
-  margin: 10px 0;
+}
+
+.listGroupItem .switchLists {
+  display: flex;
+  flex-grow: 1;
   padding: 15px 30px;
+  margin: 0px;
+}
+
+.listButtons {
+  padding: 0;
+  margin-right: 25px;
+}
+
+#contentLeft {
+  padding: 15px;
 }
 
 #contentRight {
@@ -97,4 +120,29 @@ ul {
 
 .hidden {
   display: none !important;
+}
+
+.listGroupItem i:hover {
+  color: rgb(125, 133, 239);
+}
+
+.listGroupItem:hover {
+  filter: brightness(80%);
+}
+
+li i {
+  display: none !important;
+}
+
+.editMode li i {
+  display: inline !important;
+}
+
+.listButtons {
+  text-wrap: nowrap;
+}
+
+.nav i {
+  padding: 10px;
+  border-radius: 50px;
 }/*# sourceMappingURL=style.css.map */
