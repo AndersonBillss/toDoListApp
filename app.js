@@ -38,6 +38,7 @@ document.getElementById('newListTitle').addEventListener('keydown', (event) => {
 })
 //add edit list button
 
+
 //add item button and enter press
 document.getElementById('newItemButton').addEventListener('click', addItem)
 document.getElementById('newItemName').addEventListener('keydown', (event) => {
@@ -56,14 +57,14 @@ function addList(){
     //error message (when you make a duplicate list)
     for(i=1; i<=Object.keys(lists).length; i++){
         let listItem = lists[i];
-        if(newListTitle == listItem.name){
+        if((newListTitle == listItem.name)){
             document.getElementById("warningList").innerHTML = newListTitle + " already exists!"
             return
         }
     }
     document.getElementById("warningList").innerHTML = ""
     //adds new list to the array
-    if (newListTitle != 0 && newListTitle != null && newListTitle !=undefined ){
+    if (newListTitle != null && newListTitle != "" ){
         lists[listNumber]=({name:newListTitle, todos: []})
         listNumber++
         render()
@@ -97,7 +98,41 @@ function removeList(){
     listNumber--
     render()
 }
+//function to edit a list
+function editList(){
+    render()
+    //get the id value
+    const editId = this.id
+    const editIdNumLength = editId.length-8
+    const editIdNum = Number(editId.slice(-editIdNumLength));
 
+    document.getElementById("listName" + editIdNum).remove()
+
+    //create the input box
+    let listHtmlName = document.getElementsByClassName("editBox")
+    listHtmlName[editIdNum-1].innerHTML = `<input type="text" placeholder="` + lists[editIdNum].name + `" id="editInput">`
+
+
+    document.getElementById("editInput").addEventListener('keydown', (event) => {
+        if(event.key === 'Enter'){
+            const newListEditTitle = document.getElementById("editInput").value
+            for(i=1; i<=Object.keys(lists).length; i++){
+                let listItem = lists[i];
+                if((newListEditTitle == listItem.name) && (newListEditTitle != lists[editIdNum].name)){
+                    document.getElementById("warningList").innerHTML = newListEditTitle + " already exists!"
+                    return
+                }
+            }
+            document.getElementById("warningList").innerHTML = ""
+            if ((newListEditTitle !== "") && (newListEditTitle !== null)){
+                lists[editIdNum].name = newListEditTitle
+                render()
+            } else{
+                render()
+            }
+        }
+    })
+}
 
 
 //function to add an item to a list
@@ -140,11 +175,15 @@ function render(){
         if(listItem !== undefined){
             listsHtml += `
             <li class="listGroupItem button">
-                <div class="switchLists">` + listItem.name + `</div>
-                <div class="listButtons">
-                    <i class="fa-solid fa-pencil listPencil" id="listEdit` + i + `"></i>
-                    <i class="fa-solid fa-trash listTrash" id="listRemove` + i + `"></i>
-                </div>
+
+                    <div class="switchLists" id="listName` + i + `">` + listItem.name + `</div>
+                    <div class="editBox"></div>
+                    <div class="listButtons">
+                        <i class="fa-solid fa-pencil listPencil" id="listEdit` + i + `"></i>
+                        <i class="fa-solid fa-trash listTrash" id="listRemove` + i + `"></i>
+                    </div>
+                
+                    
             </li>
             `;
         }
@@ -158,14 +197,15 @@ function render(){
         document.getElementById('listOfLists').className = "listGroup"
     }
 
-    //add delete list buttons
+    //add delete and edit list buttons
     if(document.getElementsByClassName('listGroup').innerHTML !== 0){
         let listDeleteButtonArray = document.getElementsByClassName('listTrash')
-
+        let listEditButtonArray = document.getElementsByClassName('listPencil')
         for(i=0; i<Object.keys(lists).length; i++){
-            if(listDeleteButtonArray[i] !== undefined){
-                listDeleteButtonArray[i].addEventListener('click', removeList)
-            }
+            //delete
+            listDeleteButtonArray[i].addEventListener('click', removeList)
+            //edit
+            listEditButtonArray[i].addEventListener("click", editList)
         }
     }
     

@@ -6,7 +6,7 @@ $navTextColor: rgb(193, 202, 208);
 $mainLightGray: rgb(241, 241, 241);
 $listBackgroundColor: rgb(117, 117, 128);
 $iconHighlightColor: rgb(125, 133, 239);
-
+$mainRed: rgb(173, 0, 0);
 
 input{
     padding: 10px 0;
@@ -84,7 +84,12 @@ padding: 0;
 } 
 .listButtons{
     padding: 0;
-    margin-right: 25px;
+    margin: 15px 25px 15px 0;
+}
+.editBox input{
+    padding-left: 15px;
+    margin: 0 15px;
+    width: auto
 }
 
 #contentLeft{
@@ -132,6 +137,11 @@ li i{
     text-wrap: nowrap;
 }
 .nav i{
-    padding: 10px;
-    border-radius: 50px;
+    padding: 5px;
+    border:  3px solid rgba(255, 0, 0, 0);
+}
+.nav .selected{
+    background-color: $mainRed;
+    box-shadow: none;
+    border: 3px maroon solid;
 }
