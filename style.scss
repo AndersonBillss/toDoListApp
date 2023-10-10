@@ -7,6 +7,7 @@ $mainLightGray: rgb(241, 241, 241);
 $listBackgroundColor: rgb(117, 117, 128);
 $iconHighlightColor: rgb(125, 133, 239);
 $mainRed: rgb(173, 0, 0);
+$mainGreen: rgb(0, 150, 0);
 
 input{
     padding: 10px 0;
@@ -69,24 +70,25 @@ padding: 0;
 }
 .listGroupItem{
     display: flex;
+    justify-content: space-between;
     flex-grow: 1;
     align-items: center;
-    justify-content: space-between;
     margin: 10px 0;
     background-color: $listBackgroundColor;
     color: $mainLightGray;
 }
 .listGroupItem .switchLists{
     display: flex;
+    align-items: center;
     flex-grow: 1;
-    padding: 15px 30px;
+    padding: 15px 15px;
     margin: 0px;
 } 
 .listButtons{
     padding: 0;
     margin: 15px 25px 15px 0;
 }
-.editBox input{
+.listEditBox input{
     padding-left: 15px;
     margin: 0 15px;
     width: auto
@@ -100,7 +102,8 @@ padding: 0;
     flex-direction: column;
     justify-content: center;
     align-self: start;
-    padding: 15px
+    padding: 15px;
+    margin: 25px;
 }
 .input{
     display: flex;
@@ -120,8 +123,9 @@ padding: 0;
     display: none !important;
 }
 
-.listGroupItem i:hover{
+li i:hover{
     color: $iconHighlightColor;
+    cursor: pointer;
 }
 .listGroupItem:hover{
     filter: brightness(80%);
@@ -144,4 +148,40 @@ li i{
     background-color: $mainRed;
     box-shadow: none;
     border: 3px maroon solid;
+}
+
+.itemGroupItem{
+    display: flex;
+    background-color: $listBackgroundColor;
+    justify-content: space-between;
+    color: $mainLightGray;
+    padding: 15px;
+    margin: 15px;
+    align-items: center;
+}
+.itemGroupItem div div{
+    display: flex;
+    align-items: center;
+}
+.itemGroupItem input[type=checkbox]{
+    width: 20px;
+    height: 20px;
+    margin-right: 15px;
+}
+.listToDoNumber{
+    display: flex;
+    background-color: rgb(164, 118, 0);
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+    font-size: 12px;
+    border: 2px rgba(0, 0, 0, 0.35) solid;
+}
+
+input[type=checkbox]:checked{
+    accent-color: $mainGreen;
+    box-shadow: 0 0 5px lime;
 }

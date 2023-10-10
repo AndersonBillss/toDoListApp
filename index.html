@@ -22,9 +22,9 @@
             <div id="contentLeft">
 
                     <input type="text"  placeholder="Enter List Name..." id="newListTitle">
-                    <div>
+                    <div id="newListButton" class="button">
                         Create New list 
-                        <i class="fa-solid fa-plus button" id="newListButton"></i>
+                        <i class="fa-solid fa-plus"></i>
                     </div>
 
                     <div id="warningList" class="warning"></div>
@@ -39,15 +39,15 @@
             </div>
 
             
-            <div class="hidden" id="contentRight">
+            <div class="hidden scroll" id="contentRight">
                 <div id="selectedName"></div>
                 <div class="input">
                     <input type="text"  placeholder="Enter Item Name..." id="newItemName">
                 </div>
                 
-                <div>
+                <div id="newItemButton" class="button">
                     Create New Item 
-                    <i class="fa-solid fa-plus button" id="newItemButton"></i>
+                    <i class="fa-solid fa-plus"></i>
                 </div>
                 <div id="warningItem" class="warning"></div>
                 <div id="listItems"></div>
@@ -57,7 +57,6 @@
     </div>
 
     <button id="test">test</button>
-
 
 
     <script type="text/javascript" src="app.js"></script>

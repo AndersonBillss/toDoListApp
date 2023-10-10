@@ -20,7 +20,7 @@ function selectList(){
     render()
 }
 
-
+//edit list button
 document.getElementById('editListButton').addEventListener('click', function(){
 //toggle edit mode
     editMode = !editMode
@@ -36,7 +36,6 @@ document.getElementById('newListTitle').addEventListener('keydown', (event) => {
         addList();
     }
 })
-//add edit list button
 
 
 //add item button and enter press
@@ -53,7 +52,7 @@ document.getElementById('newItemName').addEventListener('keydown', (event) => {
 let listNumber = 1
 function addList(){
     //stores the new list title as a variable
-    let newListTitle = document.getElementById('newListTitle').value
+    let newListTitle = document.getElementById('newListTitle').value.trim()
     //error message (when you make a duplicate list)
     for(i=1; i<=Object.keys(lists).length; i++){
         let listItem = lists[i];
@@ -64,7 +63,7 @@ function addList(){
     }
     document.getElementById("warningList").innerHTML = ""
     //adds new list to the array
-    if (newListTitle != null && newListTitle != "" ){
+    if (newListTitle !== null && newListTitle !== "" && newListTitle !== undefined){
         lists[listNumber]=({name:newListTitle, todos: []})
         listNumber++
         render()
@@ -109,13 +108,13 @@ function editList(){
     document.getElementById("listName" + editIdNum).remove()
 
     //create the input box
-    let listHtmlName = document.getElementsByClassName("editBox")
+    let listHtmlName = document.getElementsByClassName("listEditBox")
     listHtmlName[editIdNum-1].innerHTML = `<input type="text" placeholder="` + lists[editIdNum].name + `" id="editInput">`
 
 
     document.getElementById("editInput").addEventListener('keydown', (event) => {
         if(event.key === 'Enter'){
-            const newListEditTitle = document.getElementById("editInput").value
+            const newListEditTitle = document.getElementById("editInput").value.trim()
             for(i=1; i<=Object.keys(lists).length; i++){
                 let listItem = lists[i];
                 if((newListEditTitle == listItem.name) && (newListEditTitle != lists[editIdNum].name)){
@@ -133,13 +132,62 @@ function editList(){
         }
     })
 }
+function removeItem(){
+    const removeId = this.id
+    const removeIdNumLength = removeId.length-10
+    const removeIdNum = Number(removeId.slice(-removeIdNumLength));
+
+    selectedList.todos.splice((removeIdNum-1), 1)
+
+    render()
+}
+
+function editItem(){
+    render()
+    //get the id value
+    const editId = this.id
+    const editIdNumLength = editId.length-8
+    const editIdNum = Number(editId.slice(-editIdNumLength));
+
+    document.getElementById("itemName" + editIdNum).remove()
+
+    console.log(selectedList.todos[editIdNum])
+    //create the input box
+    let itemHtmlName = document.getElementsByClassName("itemEditBox")
+    itemHtmlName[editIdNum-1].innerHTML = `<input type="text" placeholder="` + selectedList.todos[editIdNum-1] + `" id="editInput">`
+
+
+    document.getElementById("editInput").addEventListener('keydown', (event) => {
+        if(event.key === 'Enter'){
+            const isCompleted = selectedList.todos[editIdNum-1].completed
+            const newItemEditTitle = document.getElementById("editInput").value.trim()
+            for(i=0; (i<=selectedList.todos.length-1); i++){
+                let listItem = selectedList.todos[i];
+                if((newItemEditTitle == listItem) && (newItemEditTitle != selectedList.todos[editIdNum-1])){
+                    document.getElementById("warningItem").innerHTML = newItemEditTitle + " already exists!"
+                    return
+                }
+            }
+            document.getElementById("warningList").innerHTML = ""
+            if ((newItemEditTitle !== "") && (newItemEditTitle !== null)){
+                lists[selectedListIndex].todos[editIdNum-1] = [newItemEditTitle]
+                lists[selectedListIndex].todos[editIdNum-1].completed = isCompleted
+                console.log(isCompleted)
+                
+                render()
+            } else{
+                render()
+            }
+        }
+    })
+}
 
 
 //function to add an item to a list
 function addItem(){
-    let selectedList = lists[selectedListIndex];
+    selectedList = lists[selectedListIndex];
     //stores the new item's name as a variable
-    let newItemName = document.getElementById('newItemName').value
+    let newItemName = document.getElementById('newItemName').value.trim()
     //error message (when you make a duplicate item)
     for(i=0; i<=Object.keys(selectedList.todos).length; i++){
         let item = selectedList.todos[i]
@@ -151,15 +199,22 @@ function addItem(){
     document.getElementById("warningItem").innerHTML = ""
     //add new Item to list
     if (newItemName != 0 && newItemName != null && newItemName != undefined ){
+        itemNumber = lists[selectedListIndex].todos.length
         selectedList.todos[itemNumber] = [newItemName]
-        itemNumber++
+        selectedList.todos[itemNumber].completed = false;
         render()
     }
     document.getElementById('newItemName').value = "" 
 }
 
+function markComplete(){
+    const checkboxId = this.id
+    const checkboxIdNumLength = checkboxId.length-8
+    const checkboxIdNum = Number(checkboxId.slice(-checkboxIdNumLength))
 
-
+    lists[selectedListIndex].todos[checkboxIdNum-1].completed = this.checked
+    render()
+}
 
 function render(){
 
@@ -175,15 +230,16 @@ function render(){
         if(listItem !== undefined){
             listsHtml += `
             <li class="listGroupItem button">
-
-                    <div class="switchLists" id="listName` + i + `">` + listItem.name + `</div>
-                    <div class="editBox"></div>
-                    <div class="listButtons">
-                        <i class="fa-solid fa-pencil listPencil" id="listEdit` + i + `"></i>
-                        <i class="fa-solid fa-trash listTrash" id="listRemove` + i + `"></i>
-                    </div>
-                
-                    
+                <div class="switchLists" id="listName` + i + `">
+                    <div class="listToDoNumber">` + lists[i].todos.length + `</div>
+                    ` + listItem.name + `
+                </div>
+                <div class="listEditBox">
+                </div>
+                <div class="listButtons">
+                    <i class="fa-solid fa-pencil listPencil" id="listEdit` + i + `"></i>
+                    <i class="fa-solid fa-trash listTrash" id   ="listRemove` + i + `"></i>
+                </div>
             </li>
             `;
         }
@@ -234,27 +290,70 @@ function render(){
     }
 
     //render selected list title
-    if(selectedList != null && selectedList != undefined){
+    if(selectedList != null/*  && selectedList != undefined */){
         document.getElementById('selectedName').innerHTML = selectedList.name
 
         //render todos
-        let itemsHtml = `<ul class="itemGroup">`
+        let itemsHtml = `<ul class="itemGroup" id="listOfItems">`
         for(i=0; i<Object.keys(selectedList.todos).length; i++){
+
             let item = selectedList.todos[i]
-            itemsHtml += `<li class="itemGroupItem">` + item + `</li>`
+            let checkedHtml
+            if(lists[selectedListIndex].todos[i].completed === true){
+                checkedHtml = "checked"
+            } else {
+                checkedHtml = ""
+            }
+
+            itemsHtml += `
+            <li class="itemGroupItem">
+                <div>
+                    <div class="itemEditBox"></div>
+                    <div id="itemName` + (i+1) + `">
+                        <input type="checkbox" class="taskComplete" id="checkbox` + (i+1) + `" ` + checkedHtml + `>
+                        ` + item + `
+                    </div>
+                </div>
+                <div class="itemButtons">
+                    <i class="fa-solid fa-pencil itemPencil" id="itemEdit` + (i+1) + `"></i>
+                    <i class="fa-solid fa-trash itemTrash" id="itemRemove` + (i+1) + `"></i>
+                </div>
+            </li>`
+
         }
         document.getElementById('listItems').innerHTML = itemsHtml;
         //hides contentRight html when there are no lists to display 
         document.getElementById('contentRight').className = ""
+
+        if(editMode === true){
+            document.getElementById('listOfItems').className = "itemGroup editMode"
+        }else{
+            document.getElementById('listOfItems').className = "itemGroup"
+        }
+        let listTasks = document.getElementsByClassName("taskComplete")
+        for(i=0; i<Object.keys(selectedList.todos).length; i++){
+            listTasks[i].addEventListener('click', markComplete)
+        }
     } else
     document.getElementById('contentRight').className = "hidden"
+
+    if(document.getElementsByClassName('listOfItems').innerHTML !== "undefined"){
+        let itemDeleteButtonArray = document.getElementsByClassName('itemTrash')
+        let itemEditButtonArray = document.getElementsByClassName('itemPencil')
+        for(i=0; i<lists[selectedListIndex].todos.length; i++){
+            //delete
+            itemDeleteButtonArray[i].addEventListener('click', removeItem)
+            //edit
+            itemEditButtonArray[i].addEventListener("click", editItem)
+        }
+    }
 }
-
-
 
 //test button for debugging purposes
 document.getElementById('test').addEventListener('click',function(){
-/*     console.log(selectList) */
+
     console.log(lists)
+    console.log(selectedList.todos[2])
+
 })
 
