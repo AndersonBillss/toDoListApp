@@ -7,7 +7,8 @@ $mainLightGray: rgb(241, 241, 241);
 $listBackgroundColor: rgb(117, 117, 128);
 $iconHighlightColor: rgb(125, 133, 239);
 $mainRed: rgb(173, 0, 0);
-$mainGreen: rgb(0, 150, 0);
+$mainGreen: rgb(4, 100, 4);
+$mainBorder: 2px rgba(0, 0, 0, 0.35) solid;
 
 input{
     padding: 10px 0;
@@ -131,23 +132,16 @@ li i:hover{
     filter: brightness(80%);
 }
 
-li i{
-    display: none !important;
-}
-.editMode li i{
-    display: inline !important;
-}
+
 .listButtons{
     text-wrap: nowrap;
 }
 .nav i{
     padding: 5px;
-    border:  3px solid rgba(255, 0, 0, 0);
 }
 .nav .selected{
     background-color: $mainRed;
     box-shadow: none;
-    border: 3px maroon solid;
 }
 
 .itemGroupItem{
@@ -168,20 +162,44 @@ li i{
     height: 20px;
     margin-right: 15px;
 }
-.listToDoNumber{
+.listValue{
     display: flex;
-    background-color: rgb(164, 118, 0);
-    width: 20px;
-    height: 20px;
+    padding: 5px 5px;
     border-radius: 50px;
     justify-content: center;
     align-items: center;
-    margin-right: 15px;
     font-size: 12px;
-    border: 2px rgba(0, 0, 0, 0.35) solid;
+    border: $mainBorder;
+}
+.listToDoNumber{
+    background-color: rgb(164, 118, 0);
+    margin-right: 5px;
+}
+.numberCompleted{
+    background-color: $mainGreen;
+    margin-right: 15px;
+}
+
+#newItemButton{
+    margin-top: 15px;
+}
+.contentRightTop{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#deleteCheckedItems{
+    padding: 5px 10px;
+    border: $mainBorder;
+    background-color: $mainRed;
+    color: $mainLightGray;
 }
 
 input[type=checkbox]:checked{
     accent-color: $mainGreen;
     box-shadow: 0 0 5px lime;
+}
+#deleteCheckedItems:hover{
+    filter: brightness(80%)!important;
+    cursor: pointer;
 }

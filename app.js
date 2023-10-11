@@ -1,6 +1,5 @@
 
 const lists = {};
-let editMode = false;
 
 let itemNumber = 0
 let selectedList
@@ -20,13 +19,7 @@ function selectList(){
     render()
 }
 
-//edit list button
-document.getElementById('editListButton').addEventListener('click', function(){
-//toggle edit mode
-    editMode = !editMode
-    document.getElementById('editListButton').classList.toggle('selected')
-    render()
-})
+
 
 
 //add list button and enter press
@@ -48,6 +41,19 @@ document.getElementById('newItemName').addEventListener('keydown', (event) => {
 
 
 
+//clear completed items
+document.getElementById("deleteCheckedItems").addEventListener("click", function(){
+    //for each item
+    for(i=0; i<selectedList.todos.length; i++){
+        if(selectedList.todos[i].completed === true){
+            selectedList.todos.splice(i, 1)
+            i--
+        }
+    }
+    render()
+})
+
+
 //function to add a list to the array
 let listNumber = 1
 function addList(){
@@ -63,10 +69,12 @@ function addList(){
     }
     document.getElementById("warningList").innerHTML = ""
     //adds new list to the array
-    if (newListTitle !== null && newListTitle !== "" && newListTitle !== undefined){
+    if (newListTitle !== null && newListTitle !== ""){
         lists[listNumber]=({name:newListTitle, todos: []})
         listNumber++
         render()
+    } else {
+        document.getElementById("warningList").innerHTML = `Please enter a list name!`
     }
     //clears the new list input box
     document.getElementById('newListTitle').value = ""
@@ -198,11 +206,14 @@ function addItem(){
     }
     document.getElementById("warningItem").innerHTML = ""
     //add new Item to list
-    if (newItemName != 0 && newItemName != null && newItemName != undefined ){
+    if (newItemName !== null && newItemName !== ""){
         itemNumber = lists[selectedListIndex].todos.length
         selectedList.todos[itemNumber] = [newItemName]
         selectedList.todos[itemNumber].completed = false;
         render()
+    } else {
+        document.getElementById("warningItem").innerHTML = `Please enter an item name!`
+        return
     }
     document.getElementById('newItemName').value = "" 
 }
@@ -218,6 +229,7 @@ function markComplete(){
 
 function render(){
 
+    document.getElementById("warningList").innerHTML = ""
     document.getElementById("warningItem").innerHTML = ""
     document.getElementById('newItemName').value = "" 
 
@@ -227,11 +239,30 @@ function render(){
     let listsHtml = `<ul class="listGroup" id="listOfLists">`;
     for(i=1; i<=Object.keys(lists).length; i++){
         let listItem = lists[i];
+
+        let numberCompleted = 0
+        for(j=0; j<listItem.todos.length; j++){
+            if(listItem.todos[j].completed === true)
+            numberCompleted++
+        }
+        
+        let numberSelectedCompleted = 0
+        for(j=0; j<selectedList.todos.length; j++){
+            if(selectedList.todos[j].completed === true)
+            numberSelectedCompleted++
+        }
+        if(numberSelectedCompleted == 0){
+            document.getElementById('deleteCheckedItems').classList = "hidden"
+        } else {
+            document.getElementById('deleteCheckedItems').classList = "button"
+        }
+
         if(listItem !== undefined){
             listsHtml += `
             <li class="listGroupItem button">
                 <div class="switchLists" id="listName` + i + `">
-                    <div class="listToDoNumber">` + lists[i].todos.length + `</div>
+                    <div class="listToDoNumber listValue">` + lists[i].todos.length + `</div>
+                    <div class="numberCompleted listValue">` + numberCompleted + `</div>
                     ` + listItem.name + `
                 </div>
                 <div class="listEditBox">
@@ -247,11 +278,6 @@ function render(){
     listsHtml += `</ul>`
     document.getElementById("lists").innerHTML = listsHtml;
 
-    if(editMode === true){
-        document.getElementById('listOfLists').className = "listGroup editMode"
-    }else{
-        document.getElementById('listOfLists').className = "listGroup"
-    }
 
     //add delete and edit list buttons
     if(document.getElementsByClassName('listGroup').innerHTML !== 0){
@@ -325,11 +351,6 @@ function render(){
         //hides contentRight html when there are no lists to display 
         document.getElementById('contentRight').className = ""
 
-        if(editMode === true){
-            document.getElementById('listOfItems').className = "itemGroup editMode"
-        }else{
-            document.getElementById('listOfItems').className = "itemGroup"
-        }
         let listTasks = document.getElementsByClassName("taskComplete")
         for(i=0; i<Object.keys(selectedList.todos).length; i++){
             listTasks[i].addEventListener('click', markComplete)
@@ -353,7 +374,6 @@ function render(){
 document.getElementById('test').addEventListener('click',function(){
 
     console.log(lists)
-    console.log(selectedList.todos[2])
 
 })
 

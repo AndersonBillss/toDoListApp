@@ -139,27 +139,17 @@ li i:hover {
   filter: brightness(80%);
 }
 
-li i {
-  display: none !important;
-}
-
-.editMode li i {
-  display: inline !important;
-}
-
 .listButtons {
   text-wrap: nowrap;
 }
 
 .nav i {
   padding: 5px;
-  border: 3px solid rgba(255, 0, 0, 0);
 }
 
 .nav .selected {
   background-color: rgb(173, 0, 0);
   box-shadow: none;
-  border: 3px maroon solid;
 }
 
 .itemGroupItem {
@@ -183,20 +173,49 @@ li i {
   margin-right: 15px;
 }
 
-.listToDoNumber {
+.listValue {
   display: flex;
-  background-color: rgb(164, 118, 0);
-  width: 20px;
-  height: 20px;
+  padding: 5px 5px;
   border-radius: 50px;
   justify-content: center;
   align-items: center;
-  margin-right: 15px;
   font-size: 12px;
   border: 2px rgba(0, 0, 0, 0.35) solid;
 }
 
+.listToDoNumber {
+  background-color: rgb(164, 118, 0);
+  margin-right: 5px;
+}
+
+.numberCompleted {
+  background-color: rgb(4, 100, 4);
+  margin-right: 15px;
+}
+
+#newItemButton {
+  margin-top: 15px;
+}
+
+.contentRightTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#deleteCheckedItems {
+  padding: 5px 10px;
+  border: 2px rgba(0, 0, 0, 0.35) solid;
+  background-color: rgb(173, 0, 0);
+  color: rgb(241, 241, 241);
+}
+
 input[type=checkbox]:checked {
-  accent-color: rgb(0, 150, 0);
+  accent-color: rgb(4, 100, 4);
   box-shadow: 0 0 5px lime;
+}
+
+#deleteCheckedItems:hover {
+  filter: brightness(80%) !important;
+  cursor: pointer;
 }/*# sourceMappingURL=style.css.map */
