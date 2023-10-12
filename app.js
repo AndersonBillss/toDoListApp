@@ -1,11 +1,38 @@
 
-const lists = {};
+let lists = {};
 
 let itemNumber = 0
+let selectedListIndex = 1;
 let selectedList
 
+//test button for debugging purposes
+document.getElementById('test').addEventListener('click',function(){
+    console.log(lists)
+})
+//clear local storage button
+document.getElementById('storageClear').addEventListener('click',function(){
+    localStorage.clear()
+    console.log("cleared local storage")
+})
+
+
+//get local storage
+if(localStorage.getItem("lists") !== null){
+    let listStringGet = localStorage.getItem("lists")
+    lists = JSON.parse(listStringGet)
+    selectedListIndex = localStorage.getItem("selectedListIndex")
+    console.log("grabbed stored array")
+    //iterate through each list and each item to add whether they are checked
+    for(i=1; i<=Object.keys(lists).length; i++){
+        for(j=0; j<lists[i].todos.length; j++){
+            lists[i].todos[j].completed = JSON.parse(localStorage.getItem(i + "listComplete" + j))
+        }
+    }
+}
+
+render()
+
 //get the index of the selected list and switch to it
-let selectedListIndex = 1;
 function selectList(){
     const selectedListId = this.parentElement.id
     //length of the id so I can grab the number
@@ -55,7 +82,7 @@ document.getElementById("deleteCheckedItems").addEventListener("click", function
 
 
 //function to add a list to the array
-let listNumber = 1
+let listNumber = Object.keys(lists).length+1
 function addList(){
     //stores the new list title as a variable
     let newListTitle = document.getElementById('newListTitle').value.trim()
@@ -159,7 +186,6 @@ function editItem(){
 
     document.getElementById("itemName" + editIdNum).remove()
 
-    console.log(selectedList.todos[editIdNum])
     //create the input box
     let itemHtmlName = document.getElementsByClassName("itemEditBox")
     itemHtmlName[editIdNum-1].innerHTML = `<input type="text" placeholder="` + selectedList.todos[editIdNum-1] + `" id="editInput">`
@@ -180,7 +206,6 @@ function editItem(){
             if ((newItemEditTitle !== "") && (newItemEditTitle !== null)){
                 lists[selectedListIndex].todos[editIdNum-1] = [newItemEditTitle]
                 lists[selectedListIndex].todos[editIdNum-1].completed = isCompleted
-                console.log(isCompleted)
                 
                 render()
             } else{
@@ -227,153 +252,166 @@ function markComplete(){
     render()
 }
 
+
+
+
 function render(){
 
+    //store info in local storage
+    const listString = JSON.stringify(lists)
+    localStorage.setItem("lists", listString)
+    localStorage.setItem("selectedListIndex", selectedListIndex)
+
+    //clear inputs and warnings
     document.getElementById("warningList").innerHTML = ""
     document.getElementById("warningItem").innerHTML = ""
     document.getElementById('newItemName').value = "" 
 
-    //render list of lists
-    const selectedList = lists[selectedListIndex];
+    if(lists[1] !== undefined){
 
-    let listsHtml = `<ul class="listGroup" id="listOfLists">`;
-    for(i=1; i<=Object.keys(lists).length; i++){
-        let listItem = lists[i];
+        const selectedList = lists[selectedListIndex];
 
-        let numberCompleted = 0
-        for(j=0; j<listItem.todos.length; j++){
-            if(listItem.todos[j].completed === true)
-            numberCompleted++
-        }
-        
-        let numberSelectedCompleted = 0
-        for(j=0; j<selectedList.todos.length; j++){
-            if(selectedList.todos[j].completed === true)
-            numberSelectedCompleted++
-        }
-        if(numberSelectedCompleted == 0){
-            document.getElementById('deleteCheckedItems').classList = "hidden"
-        } else {
-            document.getElementById('deleteCheckedItems').classList = "button"
-        }
+        //render list of lists
+        let listsHtml = `<ul class="listGroup" id="listOfLists">`;
+        for(i=1; i<=Object.keys(lists).length; i++){
+            let listItem = lists[i];
 
-        if(listItem !== undefined){
-            listsHtml += `
-            <li class="listGroupItem button">
-                <div class="switchLists" id="listName` + i + `">
-                    <div class="listToDoNumber listValue">` + lists[i].todos.length + `</div>
-                    <div class="numberCompleted listValue">` + numberCompleted + `</div>
-                    ` + listItem.name + `
-                </div>
-                <div class="listEditBox">
-                </div>
-                <div class="listButtons">
-                    <i class="fa-solid fa-pencil listPencil" id="listEdit` + i + `"></i>
-                    <i class="fa-solid fa-trash listTrash" id   ="listRemove` + i + `"></i>
-                </div>
-            </li>
-            `;
-        }
-    }
-    listsHtml += `</ul>`
-    document.getElementById("lists").innerHTML = listsHtml;
-
-
-    //add delete and edit list buttons
-    if(document.getElementsByClassName('listGroup').innerHTML !== 0){
-        let listDeleteButtonArray = document.getElementsByClassName('listTrash')
-        let listEditButtonArray = document.getElementsByClassName('listPencil')
-        for(i=0; i<Object.keys(lists).length; i++){
-            //delete
-            listDeleteButtonArray[i].addEventListener('click', removeList)
-            //edit
-            listEditButtonArray[i].addEventListener("click", editList)
-        }
-    }
-    
-
-    //makes each list a button that lets you switch between lists
-    const htmlListArray = document.getElementsByClassName('switchLists')
-    for(i=0; i<=(Object.keys(lists).length-1); i++){
-
-        htmlListArray[i].addEventListener('click', selectList)
-        htmlListArray[i].parentElement.id = "list" + (i+1)
-
-        //adds selected class to selected list
-        const selectedListId = htmlListArray[(selectedListIndex-1)].parentElement.id
-        idNumberLength = selectedListId.length-4
-        const selectedListIdNum = Number(selectedListId.slice(-Number(idNumberLength)))
-
-        const listId = htmlListArray[i].parentElement.id
-        idNumberLength = listId.length-4
-        let listIdNum = Number(listId.slice(-Number(idNumberLength)))
-
-        if(listIdNum == selectedListIdNum){
-            document.getElementById('list' + (i+1)).className = "selected listGroupItem button"
-        } else{
-            document.getElementById('list' + (i+1)).className = "listGroupItem button"
-        }
-    }
-
-    //render selected list title
-    if(selectedList != null/*  && selectedList != undefined */){
-        document.getElementById('selectedName').innerHTML = selectedList.name
-
-        //render todos
-        let itemsHtml = `<ul class="itemGroup" id="listOfItems">`
-        for(i=0; i<Object.keys(selectedList.todos).length; i++){
-
-            let item = selectedList.todos[i]
-            let checkedHtml
-            if(lists[selectedListIndex].todos[i].completed === true){
-                checkedHtml = "checked"
+            let numberCompleted = 0
+            for(j=0; j<listItem.todos.length; j++){
+                if(listItem.todos[j].completed === true){
+                    numberCompleted++
+                }
+                //save which todos are complete
+                localStorage.setItem(i + "listComplete" + j, listItem.todos[j].completed)
+            }
+            
+            let numberSelectedCompleted = 0
+            for(j=0; j<selectedList.todos.length; j++){
+                if(selectedList.todos[j].completed === true)
+                numberSelectedCompleted++
+            }
+            if(numberSelectedCompleted == 0){
+                document.getElementById('deleteCheckedItems').classList = "hidden"
             } else {
-                checkedHtml = ""
+                document.getElementById('deleteCheckedItems').classList = "button"
             }
 
-            itemsHtml += `
-            <li class="itemGroupItem">
-                <div>
-                    <div class="itemEditBox"></div>
-                    <div id="itemName` + (i+1) + `">
-                        <input type="checkbox" class="taskComplete" id="checkbox` + (i+1) + `" ` + checkedHtml + `>
-                        ` + item + `
+            if(listItem !== undefined){
+                listsHtml += `
+                <li class="listGroupItem button">
+                    <div class="switchLists" id="listName` + i + `">
+                        <div class="listToDoNumber listValue">` + lists[i].todos.length + `</div>
+                        <div class="numberCompleted listValue">` + numberCompleted + `</div>
+                        ` + listItem.name + `
                     </div>
-                </div>
-                <div class="itemButtons">
-                    <i class="fa-solid fa-pencil itemPencil" id="itemEdit` + (i+1) + `"></i>
-                    <i class="fa-solid fa-trash itemTrash" id="itemRemove` + (i+1) + `"></i>
-                </div>
-            </li>`
-
+                    <div class="listEditBox">
+                    </div>
+                    <div class="listButtons">
+                        <i class="fa-solid fa-pencil listPencil" id="listEdit` + i + `"></i>
+                        <i class="fa-solid fa-trash listTrash" id   ="listRemove` + i + `"></i>
+                    </div>
+                </li>
+                `;
+            }
         }
-        document.getElementById('listItems').innerHTML = itemsHtml;
-        //hides contentRight html when there are no lists to display 
-        document.getElementById('contentRight').className = ""
+        listsHtml += `</ul>`
+        document.getElementById("lists").innerHTML = listsHtml;
 
-        let listTasks = document.getElementsByClassName("taskComplete")
-        for(i=0; i<Object.keys(selectedList.todos).length; i++){
-            listTasks[i].addEventListener('click', markComplete)
-        }
-    } else
-    document.getElementById('contentRight').className = "hidden"
 
-    if(document.getElementsByClassName('listOfItems').innerHTML !== "undefined"){
-        let itemDeleteButtonArray = document.getElementsByClassName('itemTrash')
-        let itemEditButtonArray = document.getElementsByClassName('itemPencil')
-        for(i=0; i<lists[selectedListIndex].todos.length; i++){
-            //delete
-            itemDeleteButtonArray[i].addEventListener('click', removeItem)
-            //edit
-            itemEditButtonArray[i].addEventListener("click", editItem)
+        //add delete and edit list buttons
+        if(document.getElementsByClassName('listGroup').innerHTML !== 0){
+            let listDeleteButtonArray = document.getElementsByClassName('listTrash')
+            let listEditButtonArray = document.getElementsByClassName('listPencil')
+            for(i=0; i<Object.keys(lists).length; i++){
+                //delete
+                listDeleteButtonArray[i].addEventListener('click', removeList)
+                //edit
+                listEditButtonArray[i].addEventListener("click", editList)
+            }
         }
+
+
+        //makes each list a button that lets you switch between lists
+        const htmlListArray = document.getElementsByClassName('switchLists')
+        for(i=0; i<=(Object.keys(lists).length-1); i++){
+
+            htmlListArray[i].addEventListener('click', selectList)
+            htmlListArray[i].parentElement.id = "list" + (i+1)
+
+            //adds selected class to selected list
+            const selectedListId = htmlListArray[(selectedListIndex-1)].parentElement.id
+            idNumberLength = selectedListId.length-4
+            const selectedListIdNum = Number(selectedListId.slice(-Number(idNumberLength)))
+
+            const listId = htmlListArray[i].parentElement.id
+            idNumberLength = listId.length-4
+            let listIdNum = Number(listId.slice(-Number(idNumberLength)))
+
+            if(listIdNum == selectedListIdNum){
+                document.getElementById('list' + (i+1)).className = "selected listGroupItem button"
+            } else{
+                document.getElementById('list' + (i+1)).className = "listGroupItem button"
+            }
+        }
+
+        //render selected list title
+        if(selectedList != null/*  && selectedList != undefined */){
+            document.getElementById('selectedName').innerHTML = selectedList.name
+
+            //render todos
+            let itemsHtml = `<ul class="itemGroup" id="listOfItems">`
+            for(i=0; i<Object.keys(selectedList.todos).length; i++){
+
+                let item = selectedList.todos[i]
+                let checkedHtml
+                if(lists[selectedListIndex].todos[i].completed === true){
+                    checkedHtml = "checked"
+                } else {
+                    checkedHtml = ""
+                }
+
+                itemsHtml += `
+                <li class="itemGroupItem">
+                    <div>
+                        <div class="itemEditBox"></div>
+                        <div id="itemName` + (i+1) + `">
+                            <input type="checkbox" class="taskComplete" id="checkbox` + (i+1) + `" ` + checkedHtml + `>
+                            ` + item + `
+                        </div>
+                    </div>
+                    <div class="itemButtons">
+                        <i class="fa-solid fa-pencil itemPencil" id="itemEdit` + (i+1) + `"></i>
+                        <i class="fa-solid fa-trash itemTrash" id="itemRemove` + (i+1) + `"></i>
+                    </div>
+                </li>`
+
+            }
+            document.getElementById('listItems').innerHTML = itemsHtml;
+            //hides contentRight html when there are no lists to display 
+            document.getElementById('contentRight').className = ""
+
+            let listTasks = document.getElementsByClassName("taskComplete")
+            for(i=0; i<Object.keys(selectedList.todos).length; i++){
+                listTasks[i].addEventListener('click', markComplete)
+            }
+        } else
+        document.getElementById('contentRight').className = "hidden"
+
+        if(document.getElementsByClassName('listOfItems').innerHTML !== "undefined"){
+            let itemDeleteButtonArray = document.getElementsByClassName('itemTrash')
+            let itemEditButtonArray = document.getElementsByClassName('itemPencil')
+            for(i=0; i<lists[selectedListIndex].todos.length; i++){
+                //delete
+                itemDeleteButtonArray[i].addEventListener('click', removeItem)
+                //edit
+                itemEditButtonArray[i].addEventListener("click", editItem)
+            }
+        }
+    } else{
+        document.getElementById("lists").innerHTML = ""
+        document.getElementById('listItems').innerHTML = ""
+        document.getElementById('contentRight').className = "hidden"
     }
+    
 }
-
-//test button for debugging purposes
-document.getElementById('test').addEventListener('click',function(){
-
-    console.log(lists)
-
-})
 
