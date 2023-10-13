@@ -74,7 +74,6 @@ padding: 0;
     justify-content: space-between;
     flex-grow: 1;
     align-items: center;
-    margin: 10px 0;
     background-color: $listBackgroundColor;
     color: $mainLightGray;
 }
@@ -150,7 +149,6 @@ li i:hover{
     justify-content: space-between;
     color: $mainLightGray;
     padding: 15px;
-    margin: 15px;
     align-items: center;
 }
 .itemGroupItem div div{
@@ -202,4 +200,10 @@ input[type=checkbox]:checked{
 #deleteCheckedItems:hover{
     filter: brightness(80%)!important;
     cursor: pointer;
+}
+.listPosition{
+    padding-top: 10px;
+}
+.itemPosition{
+    padding-top: 15px;
 }
