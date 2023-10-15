@@ -10,16 +10,16 @@ let newListPosition = 1;
 let newItemPosition = 1;
 let listNumber = Object.keys(lists).length+1
 
-//test button for debugging purposes
+/* //test button for debugging purposes
 document.getElementById('test').addEventListener('click',function(){
     console.log(lists)
-})
-//clear local storage button
+    console.log(Object.keys(lists).length)
+}) */
+/* //clear local storage button (also for debugging)
 document.getElementById('storageClear').addEventListener('click',function(){
     localStorage.clear()
     console.log("cleared local storage")
-})
-
+}) */
 
 
 
@@ -29,7 +29,7 @@ if(localStorage.getItem("lists") !== null){
     lists = JSON.parse(listStringGet)
     selectedListIndex = Number(localStorage.getItem("selectedListIndex"))
     selectedList = lists[selectedListIndex]
-    console.log("grabbed stored array")
+    document.getElementById('searchInput').value = localStorage.getItem('listSearch')
     //iterate through each list and each item to add whether they are checked
     for(i=1; i<=Object.keys(lists).length; i++){
         for(j=0; j<lists[i].todos.length; j++){
@@ -38,6 +38,30 @@ if(localStorage.getItem("lists") !== null){
     }
 }
 render()
+
+//search for list
+document.getElementById('searchInput').addEventListener('keyup', () => {
+    render()
+    listSearch()
+})
+function listSearch(){
+    if (document.getElementById('listOfLists') !== ""){
+        const searchInput = document.getElementById('searchInput').value
+        let htmlListTitleArray = document.getElementsByClassName('listGroupItem')
+        const searchRegex = new RegExp(searchInput)
+        for(i=1; i<=Object.keys(lists).length; i++){
+            if(searchInput !== ""){
+                if(searchRegex.test(lists[i].name) === true){
+                    htmlListTitleArray[i-1].classList.add("searchHighlight")
+                } else {
+                    htmlListTitleArray[i-1].classList.remove("searchHighlight")
+                }
+            } else
+            htmlListTitleArray[i-1].classList.remove("searchHighlight")
+        }
+    }
+}
+
 
 
 //get the index of the selected list and switch to it
@@ -53,7 +77,6 @@ function selectList(){
     itemNumber = selectedList.todos.length;
     render()
 }
-
 
 function listDragStop(){
 
@@ -184,6 +207,7 @@ document.getElementById("deleteCheckedItems").addEventListener("click", function
 
 
 function addList(){
+    listNumber = Object.keys(lists).length+1
     //stores the new list title as a variable
     let newListTitle = document.getElementById('newListTitle').value.trim()
     //error message (when you make a duplicate list)
@@ -198,7 +222,6 @@ function addList(){
     //adds new list to the array
     if (newListTitle !== null && newListTitle !== ""){
         lists[listNumber]=({name:newListTitle, todos: []})
-        listNumber++
         render()
     } else {
         document.getElementById("warningList").innerHTML = `Please enter a list name!`
@@ -347,17 +370,19 @@ function markComplete(){
     render()
 }
 
-
 function render(){
 
     //store info in local storage
+    const searchSave = document.getElementById('searchInput').value
     const listString = JSON.stringify(lists)
     localStorage.setItem("lists", listString)
     localStorage.setItem("selectedListIndex", selectedListIndex)
+    localStorage.setItem("listSearch", searchSave)
 
     //clear inputs and warnings
     document.getElementById("warningList").innerHTML = ""
     document.getElementById("warningItem").innerHTML = ""
+    document.getElementById('searchWarning').innerText = ""
     document.getElementById('newItemName').value = "" 
 
     if(lists[1] !== undefined){
@@ -396,7 +421,9 @@ function render(){
                     <div class="switchLists" id="listName` + i + `">
                         <div class="listToDoNumber listValue">` + lists[i].todos.length + `</div>
                         <div class="numberCompleted listValue">` + numberCompleted + `</div>
+                        <div class="listName" id="listName` + i + `">
                         ` + listItem.name + `
+                        </div>
                     </div>
                     <div class="listEditBox">
                     </div>
@@ -528,6 +555,7 @@ function render(){
                 itemEditButtonArray[i].addEventListener("click", editItem)
             }
         }
+        listSearch()
     } else{
         document.getElementById("lists").innerHTML = ""
         document.getElementById('listItems').innerHTML = ""

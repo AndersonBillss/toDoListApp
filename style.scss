@@ -25,6 +25,10 @@ body{
 ul{
     list-style-type: none;
 }
+.search{
+    display: flex;
+    flex-direction: column;
+}
 .container{
     max-width: 1400px;
     justify-content: center;
@@ -48,10 +52,7 @@ ul{
     background-color: $mainLightGray;
     width: $contentLeftWidth;
 }
-.warning{
-    color: red;
-    font-weight: bold;
-}
+
 #contentLeft > *{
     margin-top: 15px;
 }
@@ -114,7 +115,7 @@ padding: 0;
 }
 
 .selected{
-    box-shadow: 0 0 5px blue;
+    box-shadow: 0 0 10px blue;
     background-color: darkblue;
 }
 
@@ -206,4 +207,20 @@ input[type=checkbox]:checked{
 }
 .itemPosition{
     padding-top: 15px;
+}
+.searchHighlight{
+    background-color: rgb(107, 10, 145);
+}
+.searchHighlight.selected{
+    box-shadow: 0 0 5px 5px darkblue;
+}
+.listName{
+    inline-size: 100px;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+.warning{
+    color: red;
+    font-weight: bold;
 }
