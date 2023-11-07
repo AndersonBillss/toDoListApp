@@ -16,6 +16,10 @@ ul {
   list-style-type: none;
 }
 
+input {
+  width: 80%;
+}
+
 .search {
   display: flex;
   flex-direction: column;
@@ -79,6 +83,10 @@ ul {
   color: rgb(241, 241, 241);
 }
 
+.navOptions {
+  display: flex;
+}
+
 .listGroupItem .switchLists {
   display: flex;
   align-items: center;
@@ -90,6 +98,10 @@ ul {
 .listButtons {
   padding: 0;
   margin: 15px 25px 15px 0;
+}
+
+.itemButtons {
+  display: flex;
 }
 
 .listEditBox input {
@@ -115,9 +127,17 @@ ul {
   display: flex;
 }
 
+#searchInput {
+  margin: auto 10px;
+}
+
 #selectedName {
   font-size: 24px;
   font-weight: bold;
+  overflow-wrap: break-word;
+  word-break: break-all;
+  -webkit-hyphens: auto;
+          hyphens: auto;
 }
 
 .selected {
@@ -139,7 +159,7 @@ li i:hover {
 }
 
 .listButtons {
-  text-wrap: nowrap;
+  display: flex;
 }
 
 .nav i {
@@ -158,6 +178,7 @@ li i:hover {
   color: rgb(241, 241, 241);
   padding: 15px;
   align-items: center;
+  margin-right: 30px;
 }
 
 .itemGroupItem div div {
@@ -189,6 +210,13 @@ li i:hover {
 .numberCompleted {
   background-color: rgb(4, 100, 4);
   margin-right: 15px;
+}
+
+.itemName {
+  overflow-wrap: break-word;
+  word-break: break-all;
+  -webkit-hyphens: auto;
+          hyphens: auto;
 }
 
 #newItemButton {
@@ -235,13 +263,104 @@ input[type=checkbox]:checked {
 }
 
 .listName {
-  inline-size: 100px;
   overflow-wrap: break-word;
+  word-break: break-all;
   -webkit-hyphens: auto;
           hyphens: auto;
+}
+
+#seeTodosContainer {
+  font-size: 24px;
 }
 
 .warning {
   color: red;
   font-weight: bold;
+}
+
+@media (min-width: 1000px) {
+  .nav {
+    font-size: 20px;
+  }
+  #selectedName {
+    font-size: 20px;
+  }
+  .listValue {
+    font-size: 10px;
+  }
+  input {
+    font-size: 16px;
+  }
+}
+@media (max-width: 850px) {
+  .nav {
+    font-size: 20px;
+  }
+  #contentRight {
+    margin: 0;
+  }
+  #selectedName {
+    font-size: 20px;
+  }
+  .listValue {
+    font-size: 12px;
+  }
+  .itemGroup {
+    margin: 0;
+  }
+  .itemGroup {
+    padding-left: 0;
+  }
+  .listName {
+    width: 75px;
+  }
+}
+@media (max-width: 750px) {
+  .listGroupItem {
+    width: 215px;
+  }
+  #contentLeft {
+    max-width: none;
+  }
+}
+@media (max-width: 500px) {
+  input {
+    font-size: 12px;
+  }
+  .listName {
+    width: auto;
+  }
+  .listGroupItem {
+    width: auto;
+  }
+  .numberCompleted {
+    margin-right: 5px;
+  }
+  .content {
+    justify-content: center;
+    margin: 0;
+  }
+  #contentLeft {
+    flex-grow: 1;
+    padding: 2px;
+    width: 100%;
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+  #contentRight {
+    padding: 2px;
+    width: auto;
+    flex-grow: 1;
+    width: 100%;
+    right: 0;
+  }
+  .itemGroupItem {
+    width: auto;
+    flex-grow: 1;
+    margin: 0;
+  }
+  #listItems {
+    width: auto;
+    flex-grow: 1;
+  }
 }/*# sourceMappingURL=style.css.map */

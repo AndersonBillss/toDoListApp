@@ -9,7 +9,8 @@ let selectedList
 let newListPosition = 1;
 let newItemPosition = 1;
 let listNumber = Object.keys(lists).length+1
-
+let isSmallScreen
+let view = 'lists'
 /* //test button for debugging purposes
 document.getElementById('test').addEventListener('click',function(){
     console.log(lists)
@@ -37,7 +38,7 @@ if(localStorage.getItem("lists") !== null){
         }
     }
 }
-render()
+handleScreenSize()
 
 //search for list
 document.getElementById('searchInput').addEventListener('keyup', () => {
@@ -75,6 +76,7 @@ function selectList(){
     selectedList = lists[selectedListIndex];
     //index of the next item that will be added to the selected list
     itemNumber = selectedList.todos.length;
+    view = 'todos'
     render()
 }
 
@@ -385,6 +387,8 @@ function render(){
     document.getElementById('searchWarning').innerText = ""
     document.getElementById('newItemName').value = "" 
 
+    document.getElementById('seeTodosContainer').innerHTML=""
+
     if(lists[1] !== undefined){
 
         const selectedList = lists[selectedListIndex];
@@ -494,11 +498,11 @@ function render(){
         //render selected list title
         if(selectedList != null){
             document.getElementById('selectedName').innerHTML = selectedList.name
-
+    
             //render todos
             let itemsHtml = `<ul class="itemGroup" id="listOfItems">`
             for(i=0; i<Object.keys(selectedList.todos).length; i++){
-
+    
                 let item = selectedList.todos[i]
                 let checkedHtml
                 if(lists[selectedListIndex].todos[i].completed === true){
@@ -506,13 +510,13 @@ function render(){
                 } else {
                     checkedHtml = ""
                 }
-
+    
                 itemsHtml += `
                 <div class="itemPosition" id ="ItemPosition` + (i+1) + `"></div>
                 <li class="itemGroupItem" id="item` + (i+1) + `" draggable=true>
                     <div>
                         <div class="itemEditBox"></div>
-                        <div id="itemName` + (i+1) + `">
+                        <div class="itemName" id="itemName` + (i+1) + `">
                             <input type="checkbox" class="taskComplete" id="checkbox` + (i+1) + `" ` + checkedHtml + `>
                             ` + item + `
                         </div>
@@ -522,26 +526,26 @@ function render(){
                         <i class="fa-solid fa-trash itemTrash" id="itemRemove` + (i+1) + `"></i>
                     </div>
                 </li>`
-
+    
             }
             document.getElementById('listItems').innerHTML = itemsHtml + `<div class="itemPosition" id ="ItemPosition` + (selectedList.todos.length + 1) + `"></div>`;
             //hides contentRight html when there are no lists to display 
             document.getElementById('contentRight').className = ""
-
+    
             let listTasks = document.getElementsByClassName("taskComplete")
             for(i=0; i<Object.keys(selectedList.todos).length; i++){
                 listTasks[i].addEventListener('click', markComplete)
             }
-
+    
         } else
         document.getElementById('contentRight').className = "hidden"
-
+    
         if(document.getElementsByClassName('listOfItems').innerHTML !== "undefined"){
             let itemHtmlArray = document.getElementsByClassName("itemGroupItem")
             let itemPositionArray = document.getElementsByClassName("itemPosition")
-
-
-
+    
+    
+    
             let itemDeleteButtonArray = document.getElementsByClassName('itemTrash')
             let itemEditButtonArray = document.getElementsByClassName('itemPencil')
             for(i=0; i<lists[selectedListIndex].todos.length; i++){
@@ -556,6 +560,25 @@ function render(){
             }
         }
         listSearch()
+        if(isSmallScreen == true){
+            document.getElementById('seeTodosContainer').innerHTML=`<i class="fa-solid fa-list button" id="seeTodos"></i>`
+            if(view == 'todos'){
+                document.getElementById('contentLeft').classList.add('hidden')
+                document.getElementById('contentRight').classList.remove('hidden')
+            } else {
+                document.getElementById('contentLeft').classList.remove('hidden')
+                document.getElementById('contentRight').classList.add('hidden')
+
+            }
+            document.getElementById('seeTodos').addEventListener('click', () => {
+                if(view == 'lists'){
+                    view = 'todos'
+                } else {
+                    view = 'lists'
+                }
+                render()
+            })
+        }
     } else{
         document.getElementById("lists").innerHTML = ""
         document.getElementById('listItems').innerHTML = ""
@@ -563,6 +586,22 @@ function render(){
     }
     
 }
+window.onresize = handleScreenSize
 
+function handleScreenSize(){
+    if(window.innerWidth < 500){
+        let isSmallScreenCheck = true
+        if(isSmallScreen != isSmallScreenCheck){
+            isSmallScreen = isSmallScreenCheck
+            render()
+        }
+    } else {
+        let isSmallScreenCheck = false
+        if(isSmallScreen != isSmallScreenCheck){
+            isSmallScreen = isSmallScreenCheck
+            render()
+        }
+    }
+}
 
 
