@@ -565,10 +565,11 @@ function render(){
             if(view == 'todos'){
                 document.getElementById('contentLeft').classList.add('hidden')
                 document.getElementById('contentRight').classList.remove('hidden')
+                document.getElementById('searchInput').classList.add('hidden')
             } else {
                 document.getElementById('contentLeft').classList.remove('hidden')
                 document.getElementById('contentRight').classList.add('hidden')
-
+                document.getElementById('searchInput').classList.remove('hidden')
             }
             document.getElementById('seeTodos').addEventListener('click', () => {
                 if(view == 'lists'){
@@ -589,7 +590,7 @@ function render(){
 window.onresize = handleScreenSize
 
 function handleScreenSize(){
-    if(window.innerWidth < 500){
+    if(window.innerWidth < 550){
         let isSmallScreenCheck = true
         if(isSmallScreen != isSmallScreenCheck){
             isSmallScreen = isSmallScreenCheck
@@ -599,6 +600,10 @@ function handleScreenSize(){
         let isSmallScreenCheck = false
         if(isSmallScreen != isSmallScreenCheck){
             isSmallScreen = isSmallScreenCheck
+            document.getElementById('contentLeft').classList.remove('hidden')
+            document.getElementById('contentRight').classList.remove('hidden')
+            document.getElementById('searchInput').classList.remove('hidden')
+            view = 'lists'
             render()
         }
     }
