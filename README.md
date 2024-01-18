@@ -11,3 +11,12 @@ Delete any list or todo by pressing their corresponding trash icons. Edit any li
 You can reorder your items by simply dragging them in between 2 other items. To search for a list, enter your search in the search bar on the top portion of the screen. Any list with the letters you type will be highlighted to make them easier to find.
 
 Each todo has a togglable checkbox to keep track of what you have completed. a button to the right of the screen will remove all completed todos. On the left of each list, there is a number indicating how many todos you have, and how many are complete.
+
+
+
+Docker container
+
+to serve a docker container with this app, enter the following commands into the command line (replace todolistapp with the name of the directory the to do list app files are in)
+
+ 1: docker build -t todolistapp:latest .
+ 2: docker run -d --rm --name buster -p 80:80 todolistapp:latest
