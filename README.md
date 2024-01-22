@@ -20,3 +20,6 @@ to serve a docker container with this app, enter the following commands into the
 
  1: docker build -t todolistapp:latest .
  2: docker run -d --rm --name buster -p 80:80 todolistapp:latest
+
+
+Docker stack

@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  service1:
+    image: todolistapp:latest
+    ports:
+      - 3000
+    deploy:
+      replicas: 3
+
+  service2:
+    image: todolistapp:latest
+    ports:
+      - 3001
+    deploy:
+      replicas: 2
