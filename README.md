@@ -23,3 +23,9 @@ to serve a docker container with this app, enter the following commands into the
 
 
 Docker stack
+
+Run the following command to deploy a docker stack
+  docker stack deploy -c docker-compose.yaml (stack name)
+  replace (stack name) with service1 or service2.
+
+to 
